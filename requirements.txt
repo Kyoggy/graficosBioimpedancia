@@ -1,0 +1,10 @@
+# Dependências do Analisador de Bioimpedância
+# 
+# RECOMENDADO: Use as bibliotecas do sistema Ubuntu/Debian:
+# sudo apt install python3-pandas python3-matplotlib python3-seaborn python3-openpyxl python3-tk
+#
+# Alternativamente, instale via pip (não recomendado no Ubuntu/Debian):
+pandas>=2.0.0
+matplotlib>=3.5.0
+seaborn>=0.11.0
+openpyxl>=3.0.0
