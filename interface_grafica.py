@@ -23,7 +23,7 @@ class BioimpedanceGUI:
         self.root.geometry("800x900")
         self.root.resizable(True, True)
         
-        # Configuração de tema moderno
+        # ConfiguraÃ§Ã£o de tema moderno
         self.setup_modern_theme()
         
         # Variaveis para os campos
@@ -83,7 +83,7 @@ class BioimpedanceGUI:
                            font=('Segoe UI', 10, 'bold'),
                            padding=(15, 10))
         
-        # Configura cores dos botões
+        # Configura cores dos botÃµes
         self.style.map('Modern.TButton',
                       background=[('active', self.colors['primary']),
                                 ('pressed', '#1e5f7a')])
@@ -102,96 +102,102 @@ class BioimpedanceGUI:
     def create_widgets(self):
         """Cria os widgets da interface"""
         
-        # Frame principal com scroll
-        canvas = tk.Canvas(self.root, bg=self.colors['light'])
-        scrollbar = ttk.Scrollbar(self.root, orient="vertical", command=canvas.yview)
-        scrollable_frame = ttk.Frame(canvas)
-        
-        scrollable_frame.bind(
-            "<Configure>",
-            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
-        )
-        
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-        
-        # Layout principal
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
-        
         # Frame principal
-        main_frame = ttk.Frame(scrollable_frame, padding="20")
+        main_frame = ttk.Frame(self.root, padding="10")
         main_frame.pack(fill="both", expand=True)
         
         # Configura o grid
         main_frame.columnconfigure(0, weight=1)
+        main_frame.rowconfigure(1, weight=1)
         
-        # Header com título moderno
-        header_frame = ttk.Frame(main_frame, style='Card.TFrame')
-        header_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 20), padx=10)
+        # Header simplificado
+        header_frame = ttk.Frame(main_frame)
+        header_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 10))
         header_frame.columnconfigure(0, weight=1)
         
-        # Título principal
+        # TÃ­tulo principal
         title_label = ttk.Label(header_frame, text="Analisador de Bioimpedancia", 
                                style='Title.TLabel')
-        title_label.grid(row=0, column=0, pady=20)
+        title_label.grid(row=0, column=0, pady=(0, 5))
         
-        # Subtítulo
+        # SubtÃ­tulo
         subtitle_label = ttk.Label(header_frame, 
-                                  text="Interface moderna para controle de dados corporais",
-                                  font=('Segoe UI', 12),
+                                  text="Controle completo de dados corporais",
+                                  font=('Segoe UI', 10),
                                   foreground=self.colors['gray'])
-        subtitle_label.grid(row=1, column=0, pady=(0, 20))
+        subtitle_label.grid(row=1, column=0, pady=(0, 10))
         
-        # Card para seleção de arquivo
-        file_card = ttk.Frame(main_frame, style='Card.TFrame')
-        file_card.grid(row=1, column=0, sticky=(tk.W, tk.E), pady=(0, 20), padx=10)
-        file_card.columnconfigure(1, weight=1)
+        # Notebook para abas
+        self.notebook = ttk.Notebook(main_frame)
+        self.notebook.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S), pady=(0, 10))
         
-        # Título do card
-        file_title = ttk.Label(file_card, text="Arquivo de Dados", 
-                              font=('Segoe UI', 14, 'bold'),
-                              foreground=self.colors['primary'])
-        file_title.grid(row=0, column=0, columnspan=3, sticky=tk.W, pady=(15, 10), padx=15)
+        # Aba 1: Entrada de Dados
+        self.create_data_entry_tab()
         
-        ttk.Label(file_card, text="Arquivo CSV:", 
-                 font=('Segoe UI', 10)).grid(row=1, column=0, sticky=tk.W, padx=(15, 10), pady=5)
+        # Aba 2: Gerenciar Dados
+        self.create_data_management_tab()
         
-        self.file_label = ttk.Label(file_card, text=self.csv_file, 
+        # Aba 3: Dashboard
+        self.create_dashboard_tab()
+        
+        # Status bar simplificado
+        self.create_status_bar(main_frame)
+        
+        # Configura validacao
+        self.setup_validation()
+    
+    def create_data_entry_tab(self):
+        """Cria a aba de entrada de dados"""
+        # Frame da aba
+        entry_frame = ttk.Frame(self.notebook, padding="20")
+        self.notebook.add(entry_frame, text="Entrada de Dados")
+        
+        # Configura o grid
+        entry_frame.columnconfigure(0, weight=1)
+        entry_frame.columnconfigure(1, weight=1)
+        
+        # Seção de arquivo (compacta)
+        file_frame = ttk.LabelFrame(entry_frame, text="Arquivo", padding="10")
+        file_frame.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 15))
+        file_frame.columnconfigure(1, weight=1)
+        
+        ttk.Label(file_frame, text="CSV:").grid(row=0, column=0, sticky=tk.W, padx=(0, 10))
+        self.file_label = ttk.Label(file_frame, text=self.csv_file, 
                                    background=self.colors['light'], 
                                    relief="solid", 
                                    anchor="w",
                                    font=('Segoe UI', 9),
-                                   padding=(10, 5))
-        self.file_label.grid(row=1, column=1, sticky=(tk.W, tk.E), padx=(0, 10), pady=5)
-        
-        ttk.Button(file_card, text="Alterar", 
+                                   padding=(8, 4))
+        self.file_label.grid(row=0, column=1, sticky=(tk.W, tk.E), padx=(0, 10))
+        ttk.Button(file_frame, text="Alterar", 
                   command=self.select_file,
-                  style='Modern.TButton').grid(row=1, column=2, padx=(0, 15), pady=5)
+                  style='Modern.TButton').grid(row=0, column=2)
         
-        # Card para entrada de dados
-        data_card = ttk.Frame(main_frame, style='Card.TFrame')
-        data_card.grid(row=2, column=0, sticky=(tk.W, tk.E), pady=(0, 20), padx=10)
-        data_card.columnconfigure(1, weight=1)
-        data_card.columnconfigure(3, weight=1)
+        # Campos de entrada organizados
+        self.create_data_fields(entry_frame)
         
-        # Título do card
-        data_title = ttk.Label(data_card, text="?? Novos Dados", 
-                              font=('Segoe UI', 14, 'bold'),
-                              foreground=self.colors['primary'])
-        data_title.grid(row=0, column=0, columnspan=4, sticky=tk.W, pady=(15, 20), padx=15)
+        # Botões de ação
+        self.create_action_buttons(entry_frame)
+    
+    def create_data_fields(self, parent):
+        """Cria os campos de entrada de dados"""
+        # Frame para campos
+        fields_frame = ttk.LabelFrame(parent, text="Dados Corporais", padding="15")
+        fields_frame.grid(row=1, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 15))
+        fields_frame.columnconfigure(1, weight=1)
+        fields_frame.columnconfigure(3, weight=1)
         
         # Campos organizados em duas colunas
         fields = [
-            ("?? Data:", self.var_data, 0, "Hoje"),
-            ("?? Peso (kg):", self.var_peso, 1, None),
-            ("?? IMC:", self.var_imc, 2, None),
-            ("?? Gordura (%):", self.var_gordura_pct, 3, None),
-            ("?? Gordura (kg):", self.var_gordura_kg, 4, None),
-            ("?? Massa Muscular (%):", self.var_massa_muscular_pct, 5, None),
-            ("?? Massa Muscular (kg):", self.var_massa_muscular_kg, 6, None),
-            ("?? Metabolismo (kcal/dia):", self.var_metabolismo, 7, None),
-            ("?? Obesidade (%):", self.var_obesidade_pct, 8, None)
+            ("Data:", self.var_data, 0, "Hoje"),
+            ("Peso (kg):", self.var_peso, 1, None),
+            ("IMC:", self.var_imc, 2, None),
+            ("Gordura (%):", self.var_gordura_pct, 3, None),
+            ("Gordura (kg):", self.var_gordura_kg, 4, None),
+            ("Massa Muscular (%):", self.var_massa_muscular_pct, 5, None),
+            ("Massa Muscular (kg):", self.var_massa_muscular_kg, 6, None),
+            ("Metabolismo (kcal/dia):", self.var_metabolismo, 7, None),
+            ("Obesidade (%):", self.var_obesidade_pct, 8, None)
         ]
         
         for i, (label_text, var, row, button_text) in enumerate(fields):
@@ -199,76 +205,195 @@ class BioimpedanceGUI:
             row_pos = i if i < 5 else i - 5
             
             # Label
-            ttk.Label(data_card, text=label_text, 
-                     font=('Segoe UI', 10, 'bold')).grid(
-                row=row_pos + 1, column=col, sticky=tk.W, pady=8, padx=(15, 10))
+            ttk.Label(fields_frame, text=label_text, 
+                     font=('Segoe UI', 10)).grid(
+                row=row_pos, column=col, sticky=tk.W, pady=5, padx=(0, 10))
             
             # Entry
-            entry = ttk.Entry(data_card, textvariable=var, width=20, 
+            entry = ttk.Entry(fields_frame, textvariable=var, width=18, 
                             font=('Segoe UI', 10))
-            entry.grid(row=row_pos + 1, column=col + 1, sticky=(tk.W, tk.E), 
-                     pady=8, padx=(0, 15))
+            entry.grid(row=row_pos, column=col + 1, sticky=(tk.W, tk.E), 
+                     pady=5, padx=(0, 15))
             
             # Botão especial para data
             if button_text == "Hoje":
-                ttk.Button(data_card, text=button_text, 
+                ttk.Button(fields_frame, text=button_text, 
                           command=self.set_today,
                           style='Modern.TButton').grid(
-                    row=row_pos + 1, column=col + 2, padx=(5, 15), pady=8)
+                    row=row_pos, column=col + 2, padx=(5, 0), pady=5)
+    
+    def create_action_buttons(self, parent):
+        """Cria os botões de ação"""
+        button_frame = ttk.Frame(parent)
+        button_frame.grid(row=2, column=0, columnspan=2, pady=10)
         
-        # Card para botões de ação
-        action_card = ttk.Frame(main_frame, style='Card.TFrame')
-        action_card.grid(row=3, column=0, sticky=(tk.W, tk.E), pady=(0, 20), padx=10)
-        
-        # Título do card
-        action_title = ttk.Label(action_card, text="?? Ações", 
-                                font=('Segoe UI', 14, 'bold'),
-                                foreground=self.colors['primary'])
-        action_title.grid(row=0, column=0, columnspan=3, sticky=tk.W, pady=(15, 20), padx=15)
-        
-        # Botões organizados em duas linhas
-        buttons_row1 = ttk.Frame(action_card)
-        buttons_row1.grid(row=1, column=0, columnspan=3, sticky=(tk.W, tk.E), padx=15, pady=(0, 10))
-        
-        buttons_row2 = ttk.Frame(action_card)
-        buttons_row2.grid(row=2, column=0, columnspan=3, sticky=(tk.W, tk.E), padx=15, pady=(0, 15))
-        
-        # Primeira linha de botões
-        ttk.Button(buttons_row1, text="?? Salvar Dados", 
+        ttk.Button(button_frame, text="Salvar Dados", 
                   command=self.save_data, 
                   style='Success.TButton').pack(side=tk.LEFT, padx=(0, 10))
         
-        ttk.Button(buttons_row1, text="?? Limpar Campos", 
+        ttk.Button(button_frame, text="Limpar Campos", 
                   command=self.clear_fields,
                   style='Modern.TButton').pack(side=tk.LEFT, padx=(0, 10))
         
-        ttk.Button(buttons_row1, text="?? Gerar Gráficos", 
+        ttk.Button(button_frame, text="Gerar Gráficos", 
                   command=self.generate_charts,
+                  style='Modern.TButton').pack(side=tk.LEFT)
+    
+    def create_data_management_tab(self):
+        """Cria a aba de gerenciamento de dados"""
+        # Frame da aba
+        mgmt_frame = ttk.Frame(self.notebook, padding="10")
+        self.notebook.add(mgmt_frame, text="Gerenciar Dados")
+        
+        # Configura o grid
+        mgmt_frame.columnconfigure(0, weight=1)
+        mgmt_frame.rowconfigure(1, weight=1)
+        
+        # Botões de ação
+        action_frame = ttk.Frame(mgmt_frame)
+        action_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 10))
+        
+        ttk.Button(action_frame, text="Atualizar Lista", 
+                  command=self.refresh_management_data,
                   style='Modern.TButton').pack(side=tk.LEFT, padx=(0, 10))
         
-        # Segunda linha de botões
-        ttk.Button(buttons_row2, text="?? Gerenciar Dados (CRUD)", 
-                  command=self.view_data,
-                  style='Modern.TButton').pack(side=tk.LEFT, padx=(0, 10))
+        ttk.Button(action_frame, text="Adicionar Novo", 
+                  command=self.add_new_data_quick,
+                  style='Success.TButton').pack(side=tk.LEFT, padx=(0, 10))
         
-        ttk.Button(buttons_row2, text="??? Limpar Todos os Dados", 
+        ttk.Button(action_frame, text="Limpar Todos os Dados", 
                   command=self.clear_all_data,
-                  style='Danger.TButton').pack(side=tk.LEFT, padx=(0, 10))
+                  style='Danger.TButton').pack(side=tk.LEFT)
         
-        # Card para status
-        status_card = ttk.Frame(main_frame, style='Card.TFrame')
-        status_card.grid(row=4, column=0, sticky=(tk.W, tk.E), pady=(0, 20), padx=10)
-        status_card.columnconfigure(0, weight=1)
+        # TreeView para dados
+        self.create_data_tree(mgmt_frame)
+    
+    def create_data_tree(self, parent):
+        """Cria a TreeView para gerenciar dados"""
+        # Frame para a tabela
+        table_frame = ttk.Frame(parent)
+        table_frame.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        table_frame.columnconfigure(0, weight=1)
+        table_frame.rowconfigure(0, weight=1)
         
-        # Status com ícone
-        self.status_label = ttk.Label(status_card, text="? Pronto para adicionar novos dados", 
-                                    font=('Segoe UI', 10),
-                                    foreground=self.colors['success'],
-                                    background=self.colors['white'])
-        self.status_label.grid(row=0, column=0, sticky=(tk.W, tk.E), padx=15, pady=15)
+        # Scrollbars
+        v_scrollbar = ttk.Scrollbar(table_frame, orient=tk.VERTICAL)
+        h_scrollbar = ttk.Scrollbar(table_frame, orient=tk.HORIZONTAL)
         
-        # Configura validacao
-        self.setup_validation()
+        # Treeview
+        self.data_tree = ttk.Treeview(table_frame, yscrollcommand=v_scrollbar.set, 
+                                     xscrollcommand=h_scrollbar.set, selectmode='browse')
+        
+        v_scrollbar.config(command=self.data_tree.yview)
+        h_scrollbar.config(command=self.data_tree.xview)
+        
+        # Layout
+        self.data_tree.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        v_scrollbar.grid(row=0, column=1, sticky=(tk.N, tk.S))
+        h_scrollbar.grid(row=1, column=0, sticky=(tk.W, tk.E))
+        
+        # Carrega os dados
+        self.load_data_to_tree(self.data_tree)
+        
+        # Bind duplo clique para editar
+        self.data_tree.bind('<Double-1>', lambda e: self.edit_selected_row(self.data_tree, self.root))
+        
+        # Menu de contexto
+        self.create_context_menu()
+    
+    def create_context_menu(self):
+        """Cria menu de contexto para a TreeView"""
+        self.context_menu = tk.Menu(self.root, tearoff=0)
+        self.context_menu.add_command(label="Editar", command=self.edit_selected_data)
+        self.context_menu.add_command(label="Excluir", command=self.delete_selected_data)
+        
+        self.data_tree.bind("<Button-3>", self.show_context_menu)
+    
+    def show_context_menu(self, event):
+        """Mostra menu de contexto"""
+        try:
+            self.context_menu.tk_popup(event.x_root, event.y_root)
+        finally:
+            self.context_menu.grab_release()
+    
+    def create_dashboard_tab(self):
+        """Cria a aba de dashboard"""
+        # Frame da aba
+        dashboard_frame = ttk.Frame(self.notebook, padding="20")
+        self.notebook.add(dashboard_frame, text="Dashboard")
+        
+        # Configura o grid
+        dashboard_frame.columnconfigure(0, weight=1)
+        dashboard_frame.columnconfigure(1, weight=1)
+        
+        # Métricas rápidas
+        self.create_quick_metrics(dashboard_frame)
+        
+        # Botão para gerar gráficos
+        ttk.Button(dashboard_frame, text="Gerar Relatório Completo", 
+                  command=self.generate_charts,
+                  style='Success.TButton').grid(row=1, column=0, columnspan=2, pady=20)
+    
+    def create_quick_metrics(self, parent):
+        """Cria métricas rápidas no dashboard"""
+        # Frame para métricas
+        metrics_frame = ttk.LabelFrame(parent, text="Métricas Rápidas", padding="15")
+        metrics_frame.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 15))
+        
+        # Carrega métricas dos dados
+        self.load_quick_metrics(metrics_frame)
+    
+    def load_quick_metrics(self, parent):
+        """Carrega métricas rápidas dos dados"""
+        try:
+            if os.path.exists(self.csv_file):
+                with open(self.csv_file, 'r', encoding='utf-8') as file:
+                    reader = csv.DictReader(file)
+                    rows = list(reader)
+                
+                if rows:
+                    # Calcula métricas
+                    pesos = [float(row['peso']) for row in rows if row['peso']]
+                    datas = [row['data'] for row in rows if row['data']]
+                    
+                    if pesos:
+                        peso_atual = pesos[-1]
+                        peso_anterior = pesos[-2] if len(pesos) > 1 else peso_atual
+                        variacao = peso_atual - peso_anterior
+                        
+                        # Mostra métricas
+                        ttk.Label(parent, text=f"Peso Atual: {peso_atual} kg", 
+                                 font=('Segoe UI', 12, 'bold')).grid(row=0, column=0, sticky=tk.W, pady=5)
+                        
+                        ttk.Label(parent, text=f"Variação: {variacao:+.1f} kg", 
+                                 font=('Segoe UI', 12),
+                                 foreground=self.colors['success'] if variacao < 0 else self.colors['danger']).grid(row=1, column=0, sticky=tk.W, pady=5)
+                        
+                        ttk.Label(parent, text=f"Total de Registros: {len(rows)}", 
+                                 font=('Segoe UI', 12)).grid(row=2, column=0, sticky=tk.W, pady=5)
+                        
+                        ttk.Label(parent, text=f"Última Atualização: {datas[-1]}", 
+                                 font=('Segoe UI', 10),
+                                 foreground=self.colors['gray']).grid(row=3, column=0, sticky=tk.W, pady=5)
+                else:
+                    ttk.Label(parent, text="Nenhum dado encontrado", 
+                             font=('Segoe UI', 12),
+                             foreground=self.colors['gray']).grid(row=0, column=0, sticky=tk.W, pady=5)
+        except Exception as e:
+            ttk.Label(parent, text=f"Erro ao carregar métricas: {str(e)}", 
+                     font=('Segoe UI', 12),
+                     foreground=self.colors['danger']).grid(row=0, column=0, sticky=tk.W, pady=5)
+    
+    def create_status_bar(self, parent):
+        """Cria barra de status simplificada"""
+        status_frame = ttk.Frame(parent)
+        status_frame.grid(row=2, column=0, sticky=(tk.W, tk.E), pady=(10, 0))
+        status_frame.columnconfigure(0, weight=1)
+        
+        self.status_label = ttk.Label(status_frame, text="Pronto para adicionar novos dados", 
+                                    font=('Segoe UI', 9),
+                                    foreground=self.colors['success'])
+        self.status_label.grid(row=0, column=0, sticky=tk.W)
         
     def setup_validation(self):
         """Configura validacao dos campos"""
@@ -478,7 +603,7 @@ class BioimpedanceGUI:
             main_frame = ttk.Frame(view_window)
             main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
             
-            # Frame superior com botÃµes
+            # Frame superior com botÃÂµes
             button_frame = ttk.Frame(main_frame)
             button_frame.pack(fill=tk.X, pady=(0, 10))
             
@@ -569,7 +694,7 @@ class BioimpedanceGUI:
         item = tree.item(selected[0])
         values = item['values']
         
-        # Cria janela de ediÃ§Ã£o
+        # Cria janela de ediÃÂ§ÃÂ£o
         edit_window = tk.Toplevel(parent_window)
         edit_window.title("Editar Dados")
         edit_window.geometry("500x600")
@@ -580,7 +705,7 @@ class BioimpedanceGUI:
         edit_frame = ttk.Frame(edit_window, padding="20")
         edit_frame.pack(fill=tk.BOTH, expand=True)
         
-        # VariÃ¡veis para os campos
+        # VariÃÂ¡veis para os campos
         edit_vars = {}
         columns = ['data', 'peso', 'imc', 'Gordura/porcento', 'Gordura/KG', 
                   'Massa Musucular/porcento', 'Massa Muscular/KG', 'Metabolismo', 'Obesidade/porcento']
@@ -597,7 +722,7 @@ class BioimpedanceGUI:
                 row=row, column=1, sticky=(tk.W, tk.E), pady=5, padx=(10, 0))
             row += 1
         
-        # Frame para botÃµes
+        # Frame para botÃÂµes
         button_frame = ttk.Frame(edit_frame)
         button_frame.grid(row=row, column=0, columnspan=2, pady=20)
         
@@ -615,7 +740,7 @@ class BioimpedanceGUI:
                     messagebox.showerror("Erro", "\n".join(errors))
                     return
                 
-                # LÃª todos os dados
+                # LÃÂª todos os dados
                 with open(self.csv_file, 'r', encoding='utf-8') as file:
                     reader = csv.DictReader(file)
                     rows = list(reader)
@@ -637,10 +762,10 @@ class BioimpedanceGUI:
                     self.refresh_data_tree(tree, parent_window)
                     self.update_status("Dados editados com sucesso")
                 else:
-                    messagebox.showerror("Erro", "Ãndice de linha invÃ¡lido")
+                    messagebox.showerror("Erro", "ÃÂndice de linha invÃÂ¡lido")
                     
             except Exception as e:
-                messagebox.showerror("Erro", f"Erro ao salvar alteraÃ§Ãµes: {str(e)}")
+                messagebox.showerror("Erro", f"Erro ao salvar alteraÃÂ§ÃÂµes: {str(e)}")
         
         ttk.Button(button_frame, text="Salvar", command=save_edit).pack(side=tk.LEFT, padx=(0, 10))
         ttk.Button(button_frame, text="Cancelar", command=edit_window.destroy).pack(side=tk.LEFT)
@@ -652,15 +777,15 @@ class BioimpedanceGUI:
             messagebox.showwarning("Aviso", "Selecione uma linha para excluir")
             return
         
-        # Confirma a exclusÃ£o
+        # Confirma a exclusÃÂ£o
         item = tree.item(selected[0])
         values = item['values']
         data_str = f"Data: {values[0]}, Peso: {values[1]}kg"
         
-        if messagebox.askyesno("Confirmar ExclusÃ£o", 
+        if messagebox.askyesno("Confirmar ExclusÃÂ£o", 
                               f"Tem certeza que deseja excluir esta entrada?\n\n{data_str}"):
             try:
-                # LÃª todos os dados
+                # LÃÂª todos os dados
                 with open(self.csv_file, 'r', encoding='utf-8') as file:
                     reader = csv.DictReader(file)
                     rows = list(reader)
@@ -677,18 +802,18 @@ class BioimpedanceGUI:
                         writer.writeheader()
                         writer.writerows(rows)
                     
-                    messagebox.showinfo("Sucesso", "Linha excluÃ­da com sucesso!")
+                    messagebox.showinfo("Sucesso", "Linha excluÃÂ­da com sucesso!")
                     self.refresh_data_tree(tree, parent_window)
-                    self.update_status("Linha excluÃ­da com sucesso")
+                    self.update_status("Linha excluÃÂ­da com sucesso")
                 else:
-                    messagebox.showerror("Erro", "Ãndice de linha invÃ¡lido")
+                    messagebox.showerror("Erro", "ÃÂndice de linha invÃÂ¡lido")
                     
             except Exception as e:
                 messagebox.showerror("Erro", f"Erro ao excluir linha: {str(e)}")
     
     def add_new_row_from_manager(self, parent_window):
         """Abre janela para adicionar nova linha a partir do gerenciador"""
-        # Cria uma janela de entrada rÃ¡pida
+        # Cria uma janela de entrada rÃÂ¡pida
         add_window = tk.Toplevel(parent_window)
         add_window.title("Adicionar Nova Entrada")
         add_window.geometry("400x500")
@@ -699,7 +824,7 @@ class BioimpedanceGUI:
         add_frame = ttk.Frame(add_window, padding="20")
         add_frame.pack(fill=tk.BOTH, expand=True)
         
-        # VariÃ¡veis para os campos
+        # VariÃÂ¡veis para os campos
         add_vars = {}
         columns = ['data', 'peso', 'imc', 'Gordura/porcento', 'Gordura/KG', 
                   'Massa Musucular/porcento', 'Massa Muscular/KG', 'Metabolismo', 'Obesidade/porcento']
@@ -707,7 +832,7 @@ class BioimpedanceGUI:
         for col in columns:
             add_vars[col] = tk.StringVar()
         
-        # Define data de hoje por padrÃ£o
+        # Define data de hoje por padrÃÂ£o
         add_vars['data'].set(date.today().strftime("%Y-%m-%d"))
         
         # Cria os campos de entrada
@@ -719,7 +844,7 @@ class BioimpedanceGUI:
                 row=row, column=1, sticky=(tk.W, tk.E), pady=5, padx=(10, 0))
             row += 1
         
-        # Frame para botÃµes
+        # Frame para botÃÂµes
         button_frame = ttk.Frame(add_frame)
         button_frame.grid(row=row, column=0, columnspan=2, pady=20)
         
@@ -772,14 +897,14 @@ class BioimpedanceGUI:
     def clear_all_data(self):
         """Limpa todos os dados do arquivo CSV"""
         if not os.path.exists(self.csv_file):
-            messagebox.showwarning("Aviso", "Arquivo CSV nÃ£o encontrado!")
+            messagebox.showwarning("Aviso", "Arquivo CSV nÃÂ£o encontrado!")
             return
         
-        # Confirma a operaÃ§Ã£o
+        # Confirma a operaÃÂ§ÃÂ£o
         if messagebox.askyesno("Confirmar Limpeza", 
-                              "Tem certeza que deseja APAGAR TODOS os dados?\n\nEsta operaÃ§Ã£o nÃ£o pode ser desfeita!"):
+                              "Tem certeza que deseja APAGAR TODOS os dados?\n\nEsta operaÃÂ§ÃÂ£o nÃÂ£o pode ser desfeita!"):
             try:
-                # Cria um arquivo vazio com apenas o cabeÃ§alho
+                # Cria um arquivo vazio com apenas o cabeÃÂ§alho
                 columns = ['data', 'peso', 'imc', 'Gordura/porcento', 'Gordura/KG', 
                           'Massa Musucular/porcento', 'Massa Muscular/KG', 'Metabolismo', 'Obesidade/porcento']
                 
@@ -793,8 +918,35 @@ class BioimpedanceGUI:
             except Exception as e:
                 messagebox.showerror("Erro", f"Erro ao limpar dados: {str(e)}")
     
+    def refresh_management_data(self):
+        """Atualiza os dados na aba de gerenciamento"""
+        self.load_data_to_tree(self.data_tree)
+        self.update_status("Lista de dados atualizada", "success")
+    
+    def add_new_data_quick(self):
+        """Adiciona novo dado rapidamente"""
+        # Muda para a aba de entrada de dados
+        self.notebook.select(0)
+        self.update_status("Pronto para adicionar novo dado", "info")
+    
+    def edit_selected_data(self):
+        """Edita o dado selecionado"""
+        selected = self.data_tree.selection()
+        if selected:
+            self.edit_selected_row(self.data_tree, self.root)
+        else:
+            messagebox.showwarning("Aviso", "Selecione uma linha para editar")
+    
+    def delete_selected_data(self):
+        """Exclui o dado selecionado"""
+        selected = self.data_tree.selection()
+        if selected:
+            self.delete_selected_row(self.data_tree, self.root)
+        else:
+            messagebox.showwarning("Aviso", "Selecione uma linha para excluir")
+    
     def update_status(self, message, status_type="info"):
-        """Atualiza a mensagem de status com ícones"""
+        """Atualiza a mensagem de status com Ã­cones"""
         icons = {
             "info": "??",
             "success": "?",
