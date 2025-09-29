@@ -106,7 +106,7 @@ class BioimpedanceAnalyzer:
                 bbox=dict(boxstyle='round', facecolor='lightblue', alpha=0.8))
         
         plt.tight_layout()
-        plt.savefig('data/evolucao_peso.png', dpi=300, bbox_inches='tight')
+        plt.savefig('../data/exports/evolucao_peso.png', dpi=300, bbox_inches='tight')
         plt.show()
         
         print("?? Grafico de evolucao do peso salvo como 'data/evolucao_peso.png'")
@@ -158,7 +158,7 @@ class BioimpedanceAnalyzer:
         
         plt.xticks(rotation=45)
         plt.tight_layout()
-        plt.savefig('data/composicao_corporal.png', dpi=300, bbox_inches='tight')
+        plt.savefig('../data/exports/composicao_corporal.png', dpi=300, bbox_inches='tight')
         plt.show()
         
         print("?? Grafico de composicao corporal salvo como 'data/composicao_corporal.png'")
@@ -217,7 +217,7 @@ class BioimpedanceAnalyzer:
                 bbox=dict(boxstyle='round', facecolor='lightgreen', alpha=0.8))
         
         plt.tight_layout()
-        plt.savefig('data/analise_imc.png', dpi=300, bbox_inches='tight')
+        plt.savefig('../data/exports/analise_imc.png', dpi=300, bbox_inches='tight')
         plt.show()
         
         print("?? Analise de IMC salva como 'data/analise_imc.png'")
@@ -258,7 +258,7 @@ class BioimpedanceAnalyzer:
                 bbox=dict(boxstyle='round', facecolor='orange', alpha=0.8))
         
         plt.tight_layout()
-        plt.savefig('data/analise_metabolismo.png', dpi=300, bbox_inches='tight')
+        plt.savefig('../data/exports/analise_metabolismo.png', dpi=300, bbox_inches='tight')
         plt.show()
         
         print("?? Analise de metabolismo salva como 'data/analise_metabolismo.png'")
@@ -323,7 +323,7 @@ class BioimpedanceAnalyzer:
         
         plt.suptitle('Dashboard de Composicao Corporal', fontsize=20, fontweight='bold', y=0.98)
         plt.tight_layout()
-        plt.savefig('data/dashboard_completo.png', dpi=300, bbox_inches='tight')
+        plt.savefig('../data/exports/dashboard_completo.png', dpi=300, bbox_inches='tight')
         plt.show()
         
         print("?? Dashboard completo salvo como 'data/dashboard_completo.png'")

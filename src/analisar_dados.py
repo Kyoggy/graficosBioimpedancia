@@ -7,8 +7,8 @@ Script de conveniencia para analisar dados de bioimpedancia
 import sys
 import os
 
-# Adiciona o diretorio scripts ao path
-sys.path.append('scripts')
+# Adiciona o diretorio core ao path
+sys.path.append(os.path.join(os.path.dirname(__file__), 'core'))
 
 from bioimpedance_analyzer import BioimpedanceAnalyzer
 
@@ -16,9 +16,9 @@ def main():
     print("?? Analisador de Dados de Bioimpedancia")
     print("=" * 50)
     
-    # Procura por arquivos CSV na pasta data
+    # Procura por arquivos CSV na pasta data/raw
     import glob
-    csv_files = glob.glob('data/*.csv')
+    csv_files = glob.glob('../data/raw/*.csv')
     
     if not csv_files:
         print("? Nenhum arquivo CSV encontrado na pasta 'data/'")

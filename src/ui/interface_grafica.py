@@ -13,8 +13,8 @@ from datetime import datetime, date
 import sys
 from tkinter import font
 
-# Adiciona o diretorio scripts ao path
-sys.path.append('scripts')
+# Adiciona o diretorio core ao path
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'core'))
 
 class BioimpedanceGUI:
     def __init__(self, root):
@@ -38,7 +38,7 @@ class BioimpedanceGUI:
         self.var_obesidade_pct = tk.StringVar()
         
         # Define o arquivo CSV padrao
-        self.csv_file = "data/dados_peso_exemplo.csv"
+        self.csv_file = "../data/raw/dados_peso_exemplo.csv"
         
         self.create_widgets()
         self.load_last_data()
