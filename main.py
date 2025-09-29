@@ -16,35 +16,41 @@ sys.path.insert(0, str(project_root / "src"))
 
 def main():
     """Main entry point for the application."""
-    print("?? Bioimpedance Analyzer - Professional Edition")
+    print("🏥 Bioimpedance Analyzer - Professional Edition")
     print("=" * 50)
     print("Choose an option:")
-    print("1. Open GUI Interface")
-    print("2. Analyze data from command line")
-    print("3. Exit")
+    print("1. Open Modern Desktop Interface (CustomTkinter)")
+    print("2. Open Classic GUI Interface (Tkinter)")
+    print("3. Analyze data from command line")
+    print("4. Exit")
     
     while True:
         try:
-            choice = input("\nEnter your choice (1-3): ").strip()
+            choice = input("\nEnter your choice (1-4): ").strip()
             
             if choice == "1":
-                from ui.interface_grafica import main as gui_main
-                gui_main()
+                print("🚀 Opening Modern Desktop Interface...")
+                from ui.modern_gui import main as modern_gui_main
+                modern_gui_main()
                 break
             elif choice == "2":
+                from ui.interface_gráfica import main as gui_main
+                gui_main()
+                break
+            elif choice == "3":
                 from analisar_dados import main as cli_main
                 cli_main()
                 break
-            elif choice == "3":
-                print("Goodbye! ??")
+            elif choice == "4":
+                print("Goodbye! 👋")
                 break
             else:
-                print("? Invalid choice. Please enter 1, 2, or 3.")
+                print("❌ Invalid choice. Please enter 1, 2, 3, or 4.")
         except KeyboardInterrupt:
-            print("\n\nGoodbye! ??")
+            print("\n\nGoodbye! 👋")
             break
         except Exception as e:
-            print(f"? Error: {e}")
+            print(f"❌ Error: {e}")
 
 if __name__ == "__main__":
     main()

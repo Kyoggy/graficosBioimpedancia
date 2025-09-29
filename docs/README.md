@@ -22,7 +22,7 @@ graficosBioimpedancia/
 │   ├── bioimpedance_analyzer.py           # Analisador principal
 │   ├── weight_analyzer_fixed.py           # Analisador básico
 │   └── simple_weight_analyzer.py          # Versão sem dependências
-├── interface_grafica.py                    # Interface gráfica moderna
+├── interface_gráfica.py                    # Interface gráfica moderna
 ├── analisar_dados.py                       # Script de conveniência
 ├── requirements.txt                        # Dependências do projeto
 └── README.md                               # Este arquivo
@@ -64,7 +64,7 @@ graficosBioimpedancia/
 #### Passo 2: Abrir o Programa
 1. **No terminal, digite:**
    ```bash
-   python3 interface_grafica.py
+   python3 interface_gráfica.py
    ```
 2. **Uma janela vai abrir** com 3 abas no topo
 
@@ -117,7 +117,7 @@ graficosBioimpedancia/
 - Metabolismo: 1680 kcal
 
 **O que fazer:**
-1. **Abra o programa:** `python3 interface_grafica.py`
+1. **Abra o programa:** `python3 interface_gráfica.py`
 2. **Clique em "Entrada de Dados"**
 3. **Preencha os campos:**
    - Data: Clique em "Hoje"
@@ -229,7 +229,7 @@ A interface gráfica é como um programa de computador que você usa clicando co
 - **Arquivo Escolhido**: Você pode escolher qual arquivo usar
 
 ### 🔧 **Como Usar Passo a Passo:**
-1. **Abra o programa:** `python3 interface_grafica.py`
+1. **Abra o programa:** `python3 interface_gráfica.py`
 2. **Adicione dados:** Use a aba "Entrada de Dados"
 3. **Veja seus dados:** Use a aba "Gerenciar Dados" 
 4. **Veja resumos:** Use a aba "Dashboard"
@@ -244,7 +244,7 @@ A interface gráfica é como um programa de computador que você usa clicando co
 cd "/home/pedrjunior/Documentos/Projetos Pessoais/graficosBioimpedancia"
 
 # Abra a interface gráfica
-python3 interface_grafica.py
+python3 interface_gráfica.py
 ```
 
 ### Linha de Comando

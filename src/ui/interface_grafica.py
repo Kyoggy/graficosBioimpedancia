@@ -38,7 +38,7 @@ class BioimpedanceGUI:
         self.var_obesidade_pct = tk.StringVar()
         
         # Define o arquivo CSV padrao
-        self.csv_file = "../data/raw/dados_peso_exemplo.csv"
+        self.csv_file = os.path.join(os.path.dirname(__file__), "..", "..", "data", "raw", "dados_peso_exemplo.csv")
         
         self.create_widgets()
         self.load_last_data()
@@ -536,7 +536,7 @@ class BioimpedanceGUI:
                              'Massa Musucular/porcento', 'Massa Muscular/KG', 'Metabolismo', 'Obesidade/porcento']
                 writer = csv.DictWriter(file, fieldnames=fieldnames)
                 
-                # Escreve o cabecalho se o arquivo nao existe
+                # Escreve o cabeçalho se o arquivo não existe
                 if not file_exists:
                     writer.writeheader()
                 
@@ -570,7 +570,7 @@ class BioimpedanceGUI:
         """Gera os graficos usando o analisador"""
         try:
             if not os.path.exists(self.csv_file):
-                messagebox.showerror("Erro", "Arquivo CSV nao encontrado!")
+                messagebox.showerror("Erro", "Arquivo CSV não encontrado!")
                 return
             
             # Importa e executa o analisador
@@ -590,7 +590,7 @@ class BioimpedanceGUI:
         """Abre uma janela para gerenciar os dados (CRUD)"""
         try:
             if not os.path.exists(self.csv_file):
-                messagebox.showerror("Erro", "Arquivo CSV nao encontrado!")
+                messagebox.showerror("Erro", "Arquivo CSV não encontrado!")
                 return
             
             # Cria nova janela

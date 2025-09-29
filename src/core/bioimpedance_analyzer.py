@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Analisador de Bioimpedanciometria - Script para analisar dados corporais
-Especializado para dados de balanca de bioimpedancia
+Especializado para dados de balanca de bioimpedância
 """
 
 import pandas as pd
@@ -20,7 +20,7 @@ sns.set_palette("husl")
 class BioimpedanceAnalyzer:
     def __init__(self, data_file):
         """
-        Inicializa o analisador com o arquivo de dados de bioimpedancia
+        Inicializa o analisador com o arquivo de dados de bioimpedância
         
         Args:
             data_file (str): Caminho para o arquivo de dados (CSV)
@@ -33,26 +33,26 @@ class BioimpedanceAnalyzer:
         try:
             self.data = pd.read_csv(self.data_file)
             
-            print(f"? Dados de bioimpedancia carregados com sucesso!")
-            print(f"?? Total de medicoes: {len(self.data)}")
-            print(f"?? Colunas disponiveis: {list(self.data.columns)}")
+            print(f"✅ Dados de bioimpedância carregados com sucesso!")
+            print(f"📊 Total de medições: {len(self.data)}")
+            print(f"📋 Colunas disponíveis: {list(self.data.columns)}")
             
             return True
             
         except Exception as e:
-            print(f"? Erro ao carregar dados: {e}")
+            print(f"❌ Erro ao carregar dados: {e}")
             return False
     
     def prepare_data(self):
         """Prepara os dados para analise"""
         if self.data is None:
-            print("? Nenhum dado carregado. Execute load_data() primeiro.")
+            print("❌ Nenhum dado carregado. Execute load_data() primeiro.")
             return False
         
         # Converte a coluna de data para datetime
         if 'data' in self.data.columns:
             self.data['data'] = pd.to_datetime(self.data['data'])
-            print(f"?? Coluna de data convertida: {self.data['data'].dtype}")
+            print(f"📅 Coluna de data convertida: {self.data['data'].dtype}")
         
         # Converte colunas numericas
         numeric_columns = ['peso', 'imc', 'Gordura/porcento', 'Gordura/%', 'Gordura/KG', 
@@ -62,20 +62,20 @@ class BioimpedanceAnalyzer:
         for col in numeric_columns:
             if col in self.data.columns:
                 self.data[col] = pd.to_numeric(self.data[col], errors='coerce')
-                print(f"?? Coluna numerica convertida: {col}")
+                print(f"🔢 Coluna numerica convertida: {col}")
         
         return True
     
     def create_weight_evolution(self):
         """Cria grafico de evolucao do peso"""
         if self.data is None or 'peso' not in self.data.columns:
-            print("? Dados de peso nao encontrados.")
+            print("❌ Dados de peso não encontrados.")
             return
         
         clean_data = self.data.dropna(subset=['data', 'peso'])
         
         if len(clean_data) == 0:
-            print("? Nenhum dado valido encontrado.")
+            print("❌ Nenhum dado valido encontrado.")
             return
         
         plt.figure(figsize=(14, 8))
@@ -109,12 +109,12 @@ class BioimpedanceAnalyzer:
         plt.savefig('../data/exports/evolucao_peso.png', dpi=300, bbox_inches='tight')
         plt.show()
         
-        print("?? Grafico de evolucao do peso salvo como 'data/evolucao_peso.png'")
+        print("📈 Grafico de evolucao do peso salvo como 'data/evolucao_peso.png'")
     
     def create_body_composition(self):
         """Cria grafico de composicao corporal"""
         if self.data is None:
-            print("? Nenhum dado carregado.")
+            print("❌ Nenhum dado carregado.")
             return
         
         # Verifica se as colunas necessarias existem
@@ -128,13 +128,13 @@ class BioimpedanceAnalyzer:
                 massa_col = col
         
         if not gordura_col or not massa_col:
-            print("? Colunas de composicao corporal nao encontradas.")
+            print("❌ Colunas de composicao corporal não encontradas.")
             return
         
         clean_data = self.data.dropna(subset=['data', gordura_col, massa_col])
         
         if len(clean_data) == 0:
-            print("? Nenhum dado valido encontrado.")
+            print("❌ Nenhum dado valido encontrado.")
             return
         
         fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(14, 12))
@@ -161,18 +161,18 @@ class BioimpedanceAnalyzer:
         plt.savefig('../data/exports/composicao_corporal.png', dpi=300, bbox_inches='tight')
         plt.show()
         
-        print("?? Grafico de composicao corporal salvo como 'data/composicao_corporal.png'")
+        print("💪 Grafico de composicao corporal salvo como 'data/composicao_corporal.png'")
     
     def create_imc_analysis(self):
         """Cria analise do IMC"""
         if self.data is None or 'imc' not in self.data.columns:
-            print("? Dados de IMC nao encontrados.")
+            print("❌ Dados de IMC não encontrados.")
             return
         
         clean_data = self.data.dropna(subset=['data', 'imc'])
         
         if len(clean_data) == 0:
-            print("? Nenhum dado valido encontrado.")
+            print("❌ Nenhum dado valido encontrado.")
             return
         
         plt.figure(figsize=(14, 8))
@@ -220,18 +220,18 @@ class BioimpedanceAnalyzer:
         plt.savefig('../data/exports/analise_imc.png', dpi=300, bbox_inches='tight')
         plt.show()
         
-        print("?? Analise de IMC salva como 'data/analise_imc.png'")
+        print("📊 Analise de IMC salva como 'data/analise_imc.png'")
     
     def create_metabolism_analysis(self):
         """Cria analise do metabolismo"""
         if self.data is None or 'Metabolismo' not in self.data.columns:
-            print("? Dados de metabolismo nao encontrados.")
+            print("❌ Dados de metabolismo não encontrados.")
             return
         
         clean_data = self.data.dropna(subset=['data', 'Metabolismo'])
         
         if len(clean_data) == 0:
-            print("? Nenhum dado valido encontrado.")
+            print("❌ Nenhum dado valido encontrado.")
             return
         
         plt.figure(figsize=(14, 8))
@@ -261,18 +261,18 @@ class BioimpedanceAnalyzer:
         plt.savefig('../data/exports/analise_metabolismo.png', dpi=300, bbox_inches='tight')
         plt.show()
         
-        print("?? Analise de metabolismo salva como 'data/analise_metabolismo.png'")
+        print("❌? Analise de metabolismo salva como 'data/analise_metabolismo.png'")
     
     def create_comprehensive_dashboard(self):
         """Cria dashboard completo com todos os indicadores"""
         if self.data is None:
-            print("? Nenhum dado carregado.")
+            print("❌ Nenhum dado carregado.")
             return
         
         clean_data = self.data.dropna(subset=['data'])
         
         if len(clean_data) == 0:
-            print("? Nenhum dado valido encontrado.")
+            print("❌ Nenhum dado valido encontrado.")
             return
         
         fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 12))
@@ -326,22 +326,22 @@ class BioimpedanceAnalyzer:
         plt.savefig('../data/exports/dashboard_completo.png', dpi=300, bbox_inches='tight')
         plt.show()
         
-        print("?? Dashboard completo salvo como 'data/dashboard_completo.png'")
+        print("❌? Dashboard completo salvo como 'data/dashboard_completo.png'")
     
     def generate_summary_report(self):
         """Gera relatorio resumo dos dados"""
         if self.data is None:
-            print("? Nenhum dado carregado.")
+            print("❌ Nenhum dado carregado.")
             return
         
         clean_data = self.data.dropna(subset=['data'])
         
         if len(clean_data) == 0:
-            print("? Nenhum dado valido encontrado.")
+            print("❌ Nenhum dado valido encontrado.")
             return
         
         print("\n" + "="*70)
-        print("?? RELATORIO DE COMPOSICAO CORPORAL")
+        print("❌? RELATORIO DE COMPOSICAO CORPORAL")
         print("="*70)
         
         # Dados mais recentes
@@ -349,7 +349,7 @@ class BioimpedanceAnalyzer:
         first = clean_data.iloc[0]
         
         print(f"\n?? Periodo: {first['data'].strftime('%d/%m/%Y')} a {latest['data'].strftime('%d/%m/%Y')}")
-        print(f"?? Total de medicoes: {len(clean_data)}")
+        print(f"❌? Total de medições: {len(clean_data)}")
         
         print(f"\n?? PESO:")
         if 'peso' in clean_data.columns:
@@ -402,7 +402,7 @@ class BioimpedanceAnalyzer:
     
     def generate_report(self):
         """Gera relatorio completo com todos os graficos"""
-        print("?? Iniciando analise de dados de bioimpedancia...")
+        print("❌? Iniciando analise de dados de bioimpedância...")
         print("=" * 60)
         
         if not self.load_data():
@@ -429,7 +429,7 @@ class BioimpedanceAnalyzer:
 
 def main():
     """Funcao principal"""
-    print("?? Analisador de Bioimpedancia - Composicao Corporal")
+    print("❌? Analisador de Bioimpedancia - Composicao Corporal")
     print("=" * 60)
     
     # Verifica se o arquivo foi especificado
@@ -441,15 +441,15 @@ def main():
         csv_files = glob.glob('data/*.csv')
         
         if not csv_files:
-            print("? Nenhum arquivo CSV encontrado na pasta 'data/'")
-            print("?? Coloque um arquivo .csv na pasta 'data/' e execute novamente")
+            print("❌ Nenhum arquivo CSV encontrado na pasta 'data/'")
+            print("❌? Coloque um arquivo .csv na pasta 'data/' e execute novamente")
             return
         
         if len(csv_files) == 1:
             data_file = csv_files[0]
-            print(f"?? Usando arquivo: {data_file}")
+            print(f"❌? Usando arquivo: {data_file}")
         else:
-            print("?? Multiplos arquivos encontrados:")
+            print("❌? Multiplos arquivos encontrados:")
             for i, file in enumerate(csv_files, 1):
                 print(f"  {i}. {file}")
             
@@ -457,12 +457,12 @@ def main():
                 choice = int(input("Escolha o numero do arquivo: ")) - 1
                 data_file = csv_files[choice]
             except (ValueError, IndexError):
-                print("? Escolha invalida.")
+                print("❌ Escolha invalida.")
                 return
     
     # Verifica se o arquivo existe
     if not os.path.exists(data_file):
-        print(f"? Arquivo nao encontrado: {data_file}")
+        print(f"❌ Arquivo não encontrado: {data_file}")
         return
     
     # Cria o analisador e gera o relatorio

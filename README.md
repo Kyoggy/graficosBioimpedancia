@@ -74,17 +74,26 @@ python3 main.py
 
 ### 📊 Opções de Uso
 
-1. **Interface Gráfica** (Recomendado para iniciantes)
+1. **Interface Desktop Moderna** (Recomendado)
    - Escolha opção 1 no menu principal
-   - Interface visual intuitiva com abas
+   - Interface moderna com CustomTkinter
+   - Seletor de gráficos interativo
+   - Visualização em tempo real
 
-2. **Linha de Comando** (Para usuários avançados)
+2. **Interface Gráfica Clássica** (Tkinter)
    - Escolha opção 2 no menu principal
+   - Interface tradicional com abas
+
+3. **Linha de Comando** (Para usuários avançados)
+   - Escolha opção 3 no menu principal
    - Análise direta de arquivos CSV
 
-3. **Execução Direta**
+4. **Execução Direta**
    ```bash
-   # Interface gráfica
+   # Interface moderna
+   python3 src/ui/modern_gui.py
+   
+   # Interface clássica
    python3 src/ui/interface_grafica.py
    
    # Análise de dados

@@ -8,3 +8,11 @@ pandas>=2.0.0
 matplotlib>=3.5.0
 seaborn>=0.11.0
 openpyxl>=3.0.0
+
+# Interface desktop moderna
+customtkinter>=5.2.0
+Pillow>=9.0.0
+
+# Gráficos interativos
+matplotlib>=3.5.0
+seaborn>=0.11.0

@@ -9,17 +9,23 @@ echo "Installing dependencies..."
 if command -v apt &> /dev/null; then
     echo "?? Installing system dependencies..."
     sudo apt update
-    sudo apt install -y python3-pandas python3-matplotlib python3-seaborn python3-openpyxl python3-tk
+    sudo apt install -y python3-pandas python3-matplotlib python3-seaborn python3-openpyxl python3-tk python3-pip
     
     echo "?? Installing Python dependencies..."
     pip3 install -r requirements.txt
+    
+    echo "?? Installing CustomTkinter for modern interface..."
+    pip3 install customtkinter
     
 elif command -v yum &> /dev/null; then
     echo "?? Installing system dependencies (RHEL/CentOS)..."
-    sudo yum install -y python3-pandas python3-matplotlib python3-seaborn python3-openpyxl tkinter
+    sudo yum install -y python3-pandas python3-matplotlib python3-seaborn python3-openpyxl tkinter python3-pip
     
     echo "?? Installing Python dependencies..."
     pip3 install -r requirements.txt
+    
+    echo "?? Installing CustomTkinter for modern interface..."
+    pip3 install customtkinter
     
 else
     echo "??  Unsupported system. Please install dependencies manually:"
