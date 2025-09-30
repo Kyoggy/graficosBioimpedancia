@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Analisador de Bioimpedância
+Comment=Análise profissional de composição corporal
+Exec=/home/pedrjunior/Documentos/Projetos Pessoais/graficosBioimpedancia/AnalisadorBioimpedancia
+Icon=/home/pedrjunior/Documentos/Projetos Pessoais/graficosBioimpedancia/assets/icon.png
+Terminal=false
+Categories=Science;MedicalSoftware;
